@@ -216,10 +216,6 @@ const Pricing = () => {
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
-                                    <span className="text-sm text-muted-foreground">White-label options</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
                                     <span className="text-sm text-muted-foreground">Custom integrations</span>
                                 </li>
                                 <li className="flex items-start gap-3">

@@ -89,7 +89,6 @@ const config = {
 					tertiary: '#233143',
 					'tertiary-fixed': '#0d1c2d',
 					'tertiary-fixed-variant': '#39485a',
-					primary: '#3c0091',
 					error: '#690005',
 				},
 				error: {
