@@ -35,7 +35,7 @@ const Navbar = () => {
     });
 
     return (
-        <header className="fixed top-0 w-full z-50 transition-all duration-300">
+        <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
             <motion.div
                 animate={{
                     backgroundColor: visible ? "rgba(5, 5, 5, 0.8)" : "rgba(5, 5, 5, 0)",
@@ -45,7 +45,7 @@ const Navbar = () => {
                     visible ? "border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]" : "border-transparent"
                 )}
             >
-                <Wrapper className="flex items-center justify-between h-20">
+                <div className="flex items-center justify-between h-20 mx-auto w-full lg:max-w-screen-xl px-4 lg:px-20">
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -77,8 +77,8 @@ const Navbar = () => {
                     </div>
 
                     <AnimationContainer animation="fadeLeft" delay={0.1}>
-                        <div className="flex items-center gap-4">
-                            <Link href="/signin" className="text-slate-400 hover:text-white transition-colors duration-200 font-display font-medium tracking-tight hidden md:block">
+                        <div className="hidden lg:flex items-center gap-4">
+                            <Link href="/signin" className="text-slate-400 hover:text-white transition-colors duration-200 font-display font-medium tracking-tight">
                                 Login
                             </Link>
                             <Link href="/signup">
@@ -88,7 +88,24 @@ const Navbar = () => {
                             </Link>
                         </div>
                     </AnimationContainer>
-                </Wrapper>
+
+                    {/* Mobile hamburger */}
+                    <div className="lg:hidden flex items-center gap-2">
+                        <Link href="/signup">
+                            <Button size="sm" className="bg-primary-container text-on-primary-container hover:bg-white/10 hover:text-primary font-display font-medium tracking-tight shadow-[0_0_15px_rgba(160,120,255,0.3)] text-xs px-2 py-1 h-7">
+                                Get Started
+                            </Button>
+                        </Link>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setOpen(!open)}
+                            className="text-white h-8 w-8"
+                        >
+                            {open ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+                        </Button>
+                    </div>
+                </div>
             </motion.div>
 
             {/* Mobile Menu */}
@@ -140,18 +157,6 @@ const Navbar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            {/* Mobile hamburger */}
-            <div className="lg:hidden fixed top-6 right-6 z-50">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setOpen(!open)}
-                    className="text-white"
-                >
-                    {open ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-                </Button>
-            </div>
         </header>
     );
 };
