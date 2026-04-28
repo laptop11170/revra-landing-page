@@ -98,9 +98,9 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="lg:hidden fixed inset-0 top-20 bg-surface-container-lowest/95 backdrop-blur-xl border-b border-white/10 z-40"
+                        className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-surface-container-lowest/95 backdrop-blur-xl border-b border-white/10 z-40 overflow-x-hidden"
                     >
-                        <div className="flex flex-col items-start justify-start gap-2 w-full px-6 py-8">
+                        <div className="flex flex-col items-start justify-start gap-2 w-full max-w-screen-xl mx-auto px-4 lg:px-20 py-8">
                             {NAV_LINKS.map((navItem: any, idx: number) => (
                                 <AnimationContainer
                                     key={`link-${idx}`}
