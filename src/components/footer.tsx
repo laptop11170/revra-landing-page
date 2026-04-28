@@ -36,7 +36,7 @@ const SOCIAL_LINKS = [
 const Footer = () => {
     return (
         <footer className="relative border-t border-white/5 bg-[#050505] pt-16 pb-8 w-full overflow-hidden">
-            <Wrapper className="">
+            <Wrapper className="overflow-x-hidden">
                 <div className="grid gap-12 xl:grid-cols-3 xl:gap-8">
                     <AnimationContainer animation="fadeRight" delay={0.4}>
                         <div className="flex flex-col items-start justify-start md:max-w-[300px]">

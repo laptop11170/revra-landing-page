@@ -8,8 +8,8 @@ import Wrapper from "./global/wrapper";
 import { Button } from "./ui/button";
 import SectionBadge from './ui/section-badge';
 
-const PRICING_MONTHLY = 185;
-const PRICING_ANNUAL = 165;
+const PRICING_MONTHLY = 249;
+const PRICING_ANNUAL = 235;
 
 const AnimatedNumber = ({ value, isYearly }: { value: number; isYearly: boolean }) => {
     const [displayValue, setDisplayValue] = useState(PRICING_MONTHLY);
@@ -65,11 +65,11 @@ const AnimatedNumber = ({ value, isYearly }: { value: number; isYearly: boolean 
 const PRICING_FEATURES = [
     "Unlimited leads per week",
     "AI Lead Scoring with real-time updates",
-    "SMS",
-    "Calls",
-    "iMessage",
-    "RCS",
-    "WhatsApp",
+    "Unlimited SMS",
+    "Unlimited iMessage",
+    "Unlimited RCS",
+    "Unlimited WhatsApp Messages",
+    "Dedicated Mobile Number for Calling",
     "Emma AI Voice",
     "Emma AI Text",
     "RevRa AI",
@@ -162,7 +162,7 @@ const Pricing = () => {
                             </div>
                             <p className="text-center text-xs text-muted-foreground mb-6 font-mono">
                                 {isYearly
-                                    ? `Billed $1,980/year (save $220)`
+                                    ? `Billed $2,820/year (save $168)`
                                     : `Billed monthly`}
                             </p>
 
