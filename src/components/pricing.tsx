@@ -11,35 +11,17 @@ import SectionBadge from './ui/section-badge';
 const PRICING_MONTHLY = 185;
 const PRICING_ANNUAL = 165;
 
-const DigitRoller = ({ digit, isVisible }: { digit: string; isVisible: boolean }) => {
-    return (
-        <span className="inline-block overflow-hidden relative">
-            <span
-                className={cn(
-                    "inline-block transition-transform duration-300",
-                    isVisible ? "translate-y-0" : "translate-y-6"
-                )}
-            >
-                {digit}
-            </span>
-        </span>
-    );
-};
-
 const AnimatedNumber = ({ value, isYearly }: { value: number; isYearly: boolean }) => {
     const [displayValue, setDisplayValue] = useState(PRICING_MONTHLY);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [animationKey, setAnimationKey] = useState(0);
 
     useEffect(() => {
         const targetValue = isYearly ? PRICING_ANNUAL : PRICING_MONTHLY;
         if (displayValue === targetValue) return;
 
         setIsAnimating(true);
-        setAnimationKey(prev => prev + 1);
-
-        const duration = 600;
-        const steps = 30;
+        const duration = 500;
+        const steps = 25;
         const stepDuration = duration / steps;
         const startValue = displayValue;
         const diff = targetValue - startValue;
@@ -53,7 +35,7 @@ const AnimatedNumber = ({ value, isYearly }: { value: number; isYearly: boolean 
                 clearInterval(interval);
             } else {
                 const progress = currentStep / steps;
-                const eased = 1 - Math.pow(1 - progress, 4);
+                const eased = 1 - Math.pow(1 - progress, 3);
                 const newValue = Math.round(startValue + diff * eased);
                 setDisplayValue(newValue);
             }
@@ -62,14 +44,20 @@ const AnimatedNumber = ({ value, isYearly }: { value: number; isYearly: boolean 
         return () => clearInterval(interval);
     }, [isYearly]);
 
-    const currentStr = displayValue.toString();
-    const targetStr = (isYearly ? PRICING_ANNUAL : PRICING_MONTHLY).toString();
-
     return (
-        <span className={cn("inline-block", isAnimating && "scale-110 transition-transform duration-100")}>
-            {currentStr.split('').map((digit, index) => (
-                <DigitRoller key={`${animationKey}-${index}`} digit={digit} isVisible={true} />
-            ))}
+        <span
+            className={cn(
+                "inline-block text-6xl font-display font-bold transition-transform duration-150",
+                isAnimating && "scale-110"
+            )}
+            style={{
+                background: 'linear-gradient(to right, #a078ff, #00cbe6)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+            }}
+        >
+            {displayValue}
         </span>
     );
 };
@@ -201,16 +189,58 @@ const Pricing = () => {
 
                 {/* Custom Solution Card */}
                 <AnimationContainer animation="fadeUp" delay={0.7}>
-                    <div className="relative rounded-2xl border border-outline-variant/30 bg-surface-container-lowest/50 p-8 overflow-hidden h-full flex flex-col justify-center">
-                        <div className="text-center">
-                            <div className="w-12 h-12 rounded-2xl bg-surface-container border border-outline-variant/30 flex items-center justify-center mx-auto mb-4">
-                                <svg className="w-6 h-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="relative rounded-2xl border border-outline-variant/30 bg-surface-container-lowest/50 p-8 overflow-hidden h-full flex flex-col">
+                        <div className="text-center mb-6">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
                             <h3 className="text-xl font-display font-semibold mb-2">Enterprise Solutions</h3>
-                            <p className="text-sm text-muted-foreground mb-6">Need a custom solution for your agency? Get a tailored plan that fits your specific needs.</p>
-                            <Button variant="outline" className="font-display">
+                            <p className="text-sm text-muted-foreground">Need a custom solution for your agency?</p>
+                        </div>
+
+                        <div className="flex-1">
+                            <ul className="grid grid-cols-1 gap-2 mb-6">
+                                <li className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">Everything in Complete Access</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">Custom number of seats</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">Dedicated account manager</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">White-label options</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">Custom integrations</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span className="text-sm text-muted-foreground">Priority phone support</span>
+                                </li>
+                            </ul>
+
+                            <div className="bg-surface-container rounded-lg p-3 mb-4">
+                                <label className="text-xs text-muted-foreground block mb-1">Select team size</label>
+                                <select className="w-full bg-surface border border-outline-variant/30 rounded-lg px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary/50">
+                                    <option>5-10 seats</option>
+                                    <option>11-25 seats</option>
+                                    <option>26-50 seats</option>
+                                    <option>50+ seats</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="text-center">
+                            <Button variant="outline" className="w-full font-display">
                                 Talk to Sales
                             </Button>
                         </div>
