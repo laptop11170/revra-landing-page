@@ -29,11 +29,10 @@ const CTA = () => {
 
             <div className="text-center relative z-10 max-w-2xl mx-auto">
                 <AnimationContainer animation="fadeUp" delay={0.2}>
-                    <SectionBadge title="Get Started" />
-                </AnimationContainer>
-
-                <AnimationContainer animation="fadeUp" delay={0.3}>
-                    <h2 className="text-4xl md:text-5xl font-display font-bold mt-6 mb-6">
+                    <div className="flex items-center justify-center mb-4">
+                        <SectionBadge title="Get Started" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
                         Join the future of sales intelligence.
                     </h2>
                 </AnimationContainer>
