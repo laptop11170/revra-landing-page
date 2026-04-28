@@ -38,12 +38,12 @@ const Hero = () => {
                     <AnimationContainer animation="fadeUp" delay={0.8}>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link href="/signup">
-                                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-inverse-primary to-surface-container text-white border-t border-white/20 hover:shadow-[0_0_30px_rgba(93,230,255,0.3)] transition-all duration-300 font-display">
+                                <Button size="lg" className="bg-gradient-to-r from-inverse-primary to-surface-container text-white border-t border-white/20 hover:shadow-[0_0_30px_rgba(93,230,255,0.3)] transition-all duration-300 font-display px-8">
                                     Experience RevRa: Free Trial
                                 </Button>
                             </Link>
                             <Link href="#how-it-works">
-                                <Button size="lg" variant="secondary" className="w-full sm:w-auto font-display">
+                                <Button size="lg" variant="secondary" className="font-display">
                                     See How It Works
                                 </Button>
                             </Link>
