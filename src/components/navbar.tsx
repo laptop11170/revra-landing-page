@@ -52,9 +52,7 @@ const Navbar = () => {
                         transition={{ duration: 0.2 }}
                     >
                         <Link href="/" className="flex items-center gap-2">
-                            <span className="text-2xl font-bold tracking-tighter text-white font-display drop-shadow-[0_0_8px_rgba(160,120,255,0.5)]">
-                                RevRa
-                            </span>
+                            <img src="/icons/icon.png" alt="RevRa" className="h-10 w-auto" />
                         </Link>
                     </motion.div>
 

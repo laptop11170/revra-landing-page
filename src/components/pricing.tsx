@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { cn } from '@/lib';
-import { Check } from 'lucide-react';
+import { Check, ExternalLink } from 'lucide-react';
 import AnimationContainer from './global/animation-container';
 import Wrapper from "./global/wrapper";
 import { Button } from "./ui/button";
@@ -236,9 +236,11 @@ const Pricing = () => {
                         </div>
 
                         <div className="text-center">
-                            <Button variant="outline" className="w-full font-display">
-                                Talk to Sales
-                            </Button>
+                            <a href="https://cal.id/avi-javeri/product-walkthrough" target="_blank" rel="noopener noreferrer" className="w-full">
+                                <Button variant="outline" className="w-full font-display">
+                                    Talk to Sales <ExternalLink className="ml-2 h-4 w-4" />
+                                </Button>
+                            </a>
                         </div>
                     </div>
                 </AnimationContainer>

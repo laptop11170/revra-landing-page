@@ -41,15 +41,13 @@ const Footer = () => {
                     <AnimationContainer animation="fadeRight" delay={0.4}>
                         <div className="flex flex-col items-start justify-start md:max-w-[300px]">
                             <Link href="/" className="flex items-center gap-2">
-                                <span className="text-2xl font-bold tracking-tighter text-white font-display drop-shadow-[0_0_8px_rgba(160,120,255,0.5)]">
-                                    RevRa
-                                </span>
+                                <img src="/icons/icon.png" alt="RevRa" className="h-10 w-auto" />
                             </Link>
                             <p className="text-muted-foreground mt-4 text-sm font-body">
                                 AI-native CRM built for high-velocity sales teams. Engineered for intelligence.
                             </p>
                             <div className="mt-4 text-sm text-muted-foreground font-mono">
-                                <p>support@revra.io</p>
+                                <p>support@letsrevra.com</p>
                             </div>
                             <div className="flex items-center gap-4 mt-6">
                                 {SOCIAL_LINKS.map((social, index) => (

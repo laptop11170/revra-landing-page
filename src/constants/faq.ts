@@ -23,9 +23,5 @@ export const FAQS: FAQItem[] = [
     {
         question: "What does the Morning Briefing include?",
         answer: "Every morning at 7 AM local time, you receive an AI-generated briefing covering: new leads assigned overnight, overdue follow-ups (red), leads due today (yellow), tomorrow's prep, hot leads (score 85+), appointments, renewals this month, and AI-generated action suggestions. It supports audio playback via Web Speech API for commute listening."
-    },
-    {
-        question: "How does the 14-day free trial work?",
-        answer: "New workspaces start with a 14-day free trial, no credit card required. You get full access to all Growth plan features including AI scoring, the dialer, Morning Briefing, and workflow automation. At the end of your trial, choose the plan that fits your agency or cancel with no obligation."
     }
 ];
