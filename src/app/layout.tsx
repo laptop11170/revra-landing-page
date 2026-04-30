@@ -4,6 +4,7 @@ import { cn } from "@/lib";
 import "@/styles/globals.css";
 import { generateMetadata } from "@/utils";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/context/theme-provider";
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -11,13 +12,13 @@ const isClerkConfigured = publishableKey && publishableKey.startsWith("pk_") && 
 
 export const metadata = generateMetadata();
 
-function ClerkWrapper({ children }: { children: React.ReactNode }) {
+function ClerkWrapper({ children, theme }: { children: React.ReactNode; theme?: "light" | "dark" }) {
     if (!isClerkConfigured) {
         return <>{children}</>;
     }
     return (
         <ClerkProvider>
-            <Toaster richColors theme="dark" position="bottom-center" />
+            <Toaster richColors theme={theme ?? "dark"} position="bottom-center" />
             {children}
         </ClerkProvider>
     );
@@ -29,17 +30,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning className="dark">
             <body
                 className={cn(
-                    "min-h-screen bg-[#101010] text-foreground font-base antialiased overflow-x-hidden dark",
+                    "min-h-screen bg-background text-foreground font-base antialiased overflow-x-hidden",
                     base.variable,
                     heading.variable,
                 )}
             >
-                <ClerkWrapper>
-                    {children}
-                </ClerkWrapper>
+                <ThemeProvider>
+                    <ClerkWrapper>
+                        {children}
+                    </ClerkWrapper>
+                </ThemeProvider>
             </body>
         </html>
     );

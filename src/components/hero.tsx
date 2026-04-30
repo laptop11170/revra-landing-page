@@ -1,23 +1,37 @@
 "use client";
 
+import { useTheme } from "@/context/theme-provider";
 import Link from "next/link";
+import { cn } from "@/lib";
 import AnimationContainer from "./global/animation-container";
 import Wrapper from "./global/wrapper";
 import { Button } from "./ui/button";
 import SectionBadge from "./ui/section-badge";
 
 const Hero = () => {
+    const { theme } = useTheme();
+
     return (
-        <Wrapper className="pt-40 lg:pt-52 relative min-h-screen w-full h-full flex-1">
-            {/* Background Grid & Glows */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+        <div className="relative">
+            {/* Full-width Background Grid & Glows */}
+            <div className={cn(
+                "absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none",
+                theme === "light" && "bg-[linear-gradient(rgba(13,21,39,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(13,21,39,0.05)_1px,transparent_1px)]"
+            )}></div>
             <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/20 rounded-full blur-[120px] pointer-events-none"></div>
             <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+            <Wrapper className="pt-40 lg:pt-52 relative min-h-screen w-full h-full flex-1">
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="flex flex-col items-start gap-8">
                     <AnimationContainer animation="fadeUp" delay={0.2}>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container border border-outline-variant/30">
+                        <div className={cn(
+                            "inline-flex items-center gap-2 px-3 py-1 rounded-full border",
+                            theme === "dark"
+                                ? "bg-surface-container border-outline-variant/30"
+                                : "bg-surface-container border-border/40"
+                        )}>
                             <span className="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(93,230,255,0.5)] animate-pulse"></span>
                             <span className="text-[10px] font-mono text-secondary tracking-wider uppercase">System Online</span>
                         </div>
@@ -38,7 +52,10 @@ const Hero = () => {
                     <AnimationContainer animation="fadeUp" delay={0.8}>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link href="/signup">
-                                <Button size="lg" className="bg-gradient-to-r from-inverse-primary to-surface-container text-white border-t border-white/20 hover:shadow-[0_0_30px_rgba(93,230,255,0.3)] transition-all duration-300 font-display px-8">
+                                <Button size="lg" className={cn(
+                                    "bg-gradient-to-r from-inverse-primary to-surface-container text-white border-t border-white/20 hover:shadow-[0_0_30px_rgba(93,230,255,0.3)] transition-all duration-300 font-display px-8",
+                                    theme === "light" && "from-primary to-muted border-foreground/10 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+                                )}>
                                     Experience RevRa: Free Trial
                                 </Button>
                             </Link>
@@ -53,11 +70,19 @@ const Hero = () => {
 
                 {/* Hero Visual: AI Dashboard */}
                 <AnimationContainer animation="fadeRight" delay={0.4}>
-                    <div className="relative w-full aspect-square lg:aspect-[4/3] rounded-2xl border border-outline-variant/30 bg-surface/60 backdrop-blur-xl p-6 shadow-2xl overflow-hidden group">
+                    <div className={cn(
+                        "relative w-full aspect-square lg:aspect-[4/3] rounded-2xl border backdrop-blur-xl p-6 shadow-2xl overflow-hidden group",
+                        theme === "dark"
+                            ? "border-outline-variant/30 bg-surface/60"
+                            : "border-border/40 bg-card/60"
+                    )}>
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
 
                         {/* Top Bar */}
-                        <div className="flex justify-between items-center pb-4 border-b border-outline-variant/20">
+                        <div className={cn(
+                            "flex justify-between items-center pb-4 border-b",
+                            theme === "dark" ? "border-outline-variant/20" : "border-border/30"
+                        )}>
                             <div className="flex gap-2">
                                 <div className="w-3 h-3 rounded-full bg-destructive/50"></div>
                                 <div className="w-3 h-3 rounded-full bg-muted/50"></div>
@@ -70,7 +95,12 @@ const Hero = () => {
                         <div className="flex-1 grid grid-cols-2 gap-4 mt-4">
                             {/* Left Panel: Flow */}
                             <div className="flex flex-col gap-3">
-                                <div className="bg-surface-container-high rounded-lg p-3 border border-outline-variant/20 relative overflow-hidden group">
+                                <div className={cn(
+                                    "rounded-lg p-3 border relative overflow-hidden group",
+                                    theme === "dark"
+                                        ? "bg-surface-container-high border-outline-variant/20"
+                                        : "bg-surface-container-high border-border/30"
+                                )}>
                                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-1000"></div>
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Incoming</span>
@@ -79,7 +109,12 @@ const Hero = () => {
                                     <div className="h-2 bg-surface-variant rounded w-3/4 mb-1"></div>
                                     <div className="h-2 bg-surface-variant rounded w-1/2"></div>
                                 </div>
-                                <div className="bg-surface-container-high rounded-lg p-3 border border-outline-variant/20 relative overflow-hidden group">
+                                <div className={cn(
+                                    "rounded-lg p-3 border relative overflow-hidden group",
+                                    theme === "dark"
+                                        ? "bg-surface-container-high border-outline-variant/20"
+                                        : "bg-surface-container-high border-border/30"
+                                )}>
                                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-full transition-all duration-1000 delay-150"></div>
                                     <div className="flex justify-between items-center mb-2">
                                         <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Message</span>
@@ -88,13 +123,23 @@ const Hero = () => {
                                     <div className="h-2 bg-surface-variant rounded w-full mb-1"></div>
                                     <div className="h-2 bg-surface-variant rounded w-2/3"></div>
                                 </div>
-                                <div className="flex-1 border border-dashed border-outline-variant/30 rounded-lg flex items-center justify-center bg-surface-container-low/50">
+                                <div className={cn(
+                                    "flex-1 border rounded-lg flex items-center justify-center",
+                                    theme === "dark"
+                                        ? "border-dashed border-outline-variant/30 bg-surface-container-low/50"
+                                        : "border-dashed border-border/40 bg-surface-container-low/50"
+                                )}>
                                     <span className="text-[10px] font-mono text-muted-foreground">+ 12 More</span>
                                 </div>
                             </div>
 
                             {/* Right Panel: AI Processing */}
-                            <div className="bg-surface-container-highest rounded-xl p-4 border border-outline-variant/20 flex flex-col justify-between relative shadow-[inset_0_0_20px_rgba(160,120,255,0.05)]">
+                            <div className={cn(
+                                "rounded-xl p-4 flex flex-col justify-between relative shadow-[inset_0_0_20px_rgba(160,120,255,0.05)]",
+                                theme === "dark"
+                                    ? "bg-surface-container-highest border border-outline-variant/20"
+                                    : "bg-surface-container-highest border border-border/30"
+                            )}>
                                 <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/20 blur-2xl rounded-full"></div>
                                 <div>
                                     <div className="flex items-center gap-2 mb-4">
@@ -103,7 +148,12 @@ const Hero = () => {
                                     </div>
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-surface border border-outline-variant/50 flex items-center justify-center">
+                                            <div className={cn(
+                                                "w-8 h-8 rounded-full flex items-center justify-center",
+                                                theme === "dark"
+                                                    ? "bg-surface border border-outline-variant/50"
+                                                    : "bg-muted border border-border/50"
+                                            )}>
                                                 <span className="font-mono text-[10px] text-on-surface">98</span>
                                             </div>
                                             <div className="flex-1">
@@ -112,7 +162,12 @@ const Hero = () => {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-surface border border-outline-variant/50 flex items-center justify-center">
+                                            <div className={cn(
+                                                "w-8 h-8 rounded-full flex items-center justify-center",
+                                                theme === "dark"
+                                                    ? "bg-surface border border-outline-variant/50"
+                                                    : "bg-muted border border-border/50"
+                                            )}>
                                                 <span className="font-mono text-[10px] text-on-surface">85</span>
                                             </div>
                                             <div className="flex-1">
@@ -122,7 +177,12 @@ const Hero = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mt-4 p-2 bg-surface/50 rounded border border-outline-variant/30 text-center">
+                                <div className={cn(
+                                    "mt-4 p-2 rounded border text-center",
+                                    theme === "dark"
+                                        ? "bg-surface/50 border-outline-variant/30"
+                                        : "bg-muted/50 border-border/30"
+                                )}>
                                     <span className="font-mono text-[10px] text-primary">Generating drafted response...</span>
                                 </div>
                             </div>
@@ -130,7 +190,8 @@ const Hero = () => {
                     </div>
                 </AnimationContainer>
             </div>
-        </Wrapper>
+            </Wrapper>
+        </div>
     )
 };
 

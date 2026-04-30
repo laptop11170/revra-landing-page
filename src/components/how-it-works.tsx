@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "@/context/theme-provider";
 import { HOW_IT_WORKS } from "@/constants";
 import { cn } from "@/lib";
 import AnimationContainer from './global/animation-container';
@@ -7,10 +8,16 @@ import Wrapper from "./global/wrapper";
 import SectionBadge from "./ui/section-badge";
 
 const HowItWorksCard = ({ item, index }: { item: typeof HOW_IT_WORKS[0]; index: number }) => {
+    const { theme } = useTheme();
     const isEven = index % 2 === 0;
 
     return (
-        <div className="flex flex-col items-start gap-6 bg-surface-container-lowest/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 relative overflow-hidden group hover:border-primary/30 hover:bg-surface-container-lowest/60 transition-all duration-500">
+        <div className={cn(
+            "flex flex-col items-start gap-6 rounded-2xl p-6 relative overflow-hidden group hover:border-primary/30 hover:bg-surface-container-lowest/60 transition-all duration-500 backdrop-blur-xl",
+            theme === "dark"
+                ? "bg-surface-container-lowest/40 border border-white/10"
+                : "bg-card/40 border border-border/40"
+        )}>
             {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 

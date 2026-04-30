@@ -2,20 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS } from "@/constants";
+import { useTheme } from "@/context/theme-provider";
 import { useClickOutside } from "@/hooks";
 import { cn } from "@/lib";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, Moon, Sun, XIcon } from "lucide-react";
 import Link from "next/link";
 import { RefObject, useRef, useState } from "react";
 import AnimationContainer from "./global/animation-container";
-import Wrapper from "./global/wrapper";
 
 const Navbar = () => {
 
     const ref = useRef<HTMLDivElement | null>(null);
     const [open, setOpen] = useState(false);
     const [visible, setVisible] = useState<boolean>(false);
+    const { theme, toggleTheme } = useTheme();
 
     const mobileMenuRef = useClickOutside(() => {
         if (open) setOpen(false);
@@ -38,11 +39,21 @@ const Navbar = () => {
         <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
             <motion.div
                 animate={{
-                    backgroundColor: visible ? "rgba(5, 5, 5, 0.8)" : "rgba(5, 5, 5, 0)",
+                    backgroundColor: visible
+                        ? theme === "dark"
+                            ? "rgba(5, 5, 5, 0.8)"
+                            : "rgba(248, 249, 252, 0.85)"
+                        : theme === "dark"
+                            ? "rgba(5, 5, 5, 0)"
+                            : "rgba(248, 249, 252, 0)",
                 }}
                 className={cn(
                     "border-b transition-all duration-300",
-                    visible ? "border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]" : "border-transparent"
+                    visible
+                        ? theme === "dark"
+                            ? "border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+                            : "border-black/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+                        : "border-transparent"
                 )}
             >
                 <div className="flex items-center justify-between h-20 mx-auto w-full lg:max-w-screen-xl px-4 lg:px-20">
@@ -65,7 +76,7 @@ const Navbar = () => {
                                     delay={0.1 * index}
                                 >
                                     <div className="relative">
-                                        <Link href={link.link} className="text-slate-400 hover:text-white transition-colors duration-200">
+                                        <Link href={link.link} className="text-muted-foreground hover:text-foreground transition-colors duration-200">
                                             {link.name}
                                         </Link>
                                     </div>
@@ -76,11 +87,43 @@ const Navbar = () => {
 
                     <AnimationContainer animation="fadeLeft" delay={0.1}>
                         <div className="hidden lg:flex items-center gap-4">
-                            <Link href="/signin" className="text-slate-400 hover:text-white transition-colors duration-200 font-display font-medium tracking-tight">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={toggleTheme}
+                                className={cn(
+                                    "h-9 w-9 rounded-lg transition-all duration-200",
+                                    theme === "dark"
+                                        ? "text-slate-400 hover:text-white hover:bg-white/10"
+                                        : "text-slate-600 hover:text-black hover:bg-black/5"
+                                )}
+                            >
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={theme}
+                                        initial={{ rotate: -90, opacity: 0 }}
+                                        animate={{ rotate: 0, opacity: 1 }}
+                                        exit={{ rotate: 90, opacity: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        {theme === "dark" ? (
+                                            <Moon className="h-5 w-5" />
+                                        ) : (
+                                            <Sun className="h-5 w-5" />
+                                        )}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </Button>
+                            <Link href="/signin" className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-display font-medium tracking-tight">
                                 Login
                             </Link>
                             <Link href="/signup">
-                                <Button size="sm" className="bg-primary-container text-on-primary-container hover:bg-white/10 hover:text-primary font-display font-medium tracking-tight shadow-[0_0_15px_rgba(160,120,255,0.3)]">
+                                <Button size="sm" className={cn(
+                                    "font-display font-medium tracking-tight shadow-[0_0_15px_rgba(160,120,255,0.3)]",
+                                    theme === "dark"
+                                        ? "bg-primary-container text-on-primary-container hover:bg-white/10 hover:text-primary"
+                                        : "bg-primary text-primary-foreground hover:bg-primary/90"
+                                )}>
                                     Get Started
                                 </Button>
                             </Link>
@@ -89,8 +132,40 @@ const Navbar = () => {
 
                     {/* Mobile hamburger */}
                     <div className="lg:hidden flex items-center gap-2">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={toggleTheme}
+                            className={cn(
+                                "h-8 w-8 transition-all duration-200",
+                                theme === "dark"
+                                    ? "text-slate-400 hover:text-white"
+                                    : "text-slate-600 hover:text-black"
+                            )}
+                        >
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={theme}
+                                    initial={{ rotate: -90, opacity: 0 }}
+                                    animate={{ rotate: 0, opacity: 1 }}
+                                    exit={{ rotate: 90, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    {theme === "dark" ? (
+                                        <Moon className="h-4 w-4" />
+                                    ) : (
+                                        <Sun className="h-4 w-4" />
+                                    )}
+                                </motion.div>
+                            </AnimatePresence>
+                        </Button>
                         <Link href="/signup">
-                            <Button size="sm" className="bg-primary-container text-on-primary-container hover:bg-white/10 hover:text-primary font-display font-medium tracking-tight shadow-[0_0_15px_rgba(160,120,255,0.3)] text-xs px-2 py-1 h-7">
+                            <Button size="sm" className={cn(
+                                "text-xs px-2 py-1 h-7 font-display font-medium tracking-tight shadow-[0_0_15px_rgba(160,120,255,0.3)]",
+                                theme === "dark"
+                                    ? "bg-primary-container text-on-primary-container hover:bg-white/10 hover:text-primary"
+                                    : "bg-primary text-primary-foreground hover:bg-primary/90"
+                            )}>
                                 Get Started
                             </Button>
                         </Link>
@@ -98,7 +173,10 @@ const Navbar = () => {
                             variant="ghost"
                             size="icon"
                             onClick={() => setOpen(!open)}
-                            className="text-white h-8 w-8"
+                            className={cn(
+                                "h-8 w-8",
+                                theme === "dark" ? "text-white" : "text-foreground"
+                            )}
                         >
                             {open ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
                         </Button>
@@ -113,7 +191,12 @@ const Navbar = () => {
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-surface-container-lowest/95 backdrop-blur-xl border-b border-white/10 z-40 overflow-x-hidden"
+                        className={cn(
+                            "lg:hidden fixed inset-x-0 top-20 bottom-0 backdrop-blur-xl border-b z-40 overflow-x-hidden",
+                            theme === "dark"
+                                ? "bg-surface-container-lowest/95 border-white/10"
+                                : "bg-white/95 border-black/10"
+                        )}
                     >
                         <div className="flex flex-col items-start justify-start gap-2 w-full max-w-screen-xl mx-auto px-4 lg:px-20 py-8">
                             {NAV_LINKS.map((navItem: any, idx: number) => (
@@ -126,7 +209,12 @@ const Navbar = () => {
                                     <Link
                                         href={navItem.link}
                                         onClick={() => setOpen(false)}
-                                        className="text-slate-400 hover:bg-white/5 w-full px-4 py-3 rounded-lg transition-colors"
+                                        className={cn(
+                                            "w-full px-4 py-3 rounded-lg transition-colors",
+                                            theme === "dark"
+                                                ? "text-slate-400 hover:bg-white/5"
+                                                : "text-slate-600 hover:bg-black/5"
+                                        )}
                                     >
                                         <span className="font-display font-medium">{navItem.name}</span>
                                     </Link>

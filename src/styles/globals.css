@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  .dark {
     --background: 222 47% 4%;
     --foreground: 220 40% 90%;
     --card: 222 47% 4%;
@@ -31,28 +31,60 @@
     --chart-3: 223 39% 11%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Surface elevation - dark */
+    --surface: 222 47% 5%;
+    --surface-dim: 222 47% 5%;
+    --surface-bright: 223 39% 15%;
+    --surface-container: 223 39% 11%;
+    --surface-container-low: 223 39% 9%;
+    --surface-container-lowest: 222 47% 3%;
+    --surface-container-high: 223 39% 13%;
+    --surface-container-highest: 223 39% 18%;
+    --surface-variant: 223 39% 18%;
+    --on-surface: 220 40% 90%;
+    --on-surface-variant: 223 13% 75%;
   }
 
-  .dark {
-    --background: 222 47% 4%;
-    --foreground: 220 40% 90%;
-    --card: 222 47% 4%;
-    --card-foreground: 220 40% 90%;
-    --popover: 222 47% 4%;
-    --popover-foreground: 220 40% 90%;
-    --primary: 266 100% 74%;
-    --primary-foreground: 266 100% 10%;
-    --secondary: 187 100% 63%;
-    --secondary-foreground: 187 100% 10%;
-    --muted: 223 39% 11%;
-    --muted-foreground: 223 13% 61%;
-    --accent: 223 39% 11%;
-    --accent-foreground: 220 40% 90%;
+  .light {
+    --background: 220 20% 97%;
+    --foreground: 222 47% 11%;
+    --card: 220 20% 97%;
+    --card-foreground: 222 47% 11%;
+    --popover: 220 20% 97%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 266 100% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 187 100% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 15% 90%;
+    --muted-foreground: 220 13% 45%;
+    --accent: 220 15% 90%;
+    --accent-foreground: 222 47% 11%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 84% 98%;
-    --border: 266 30% 30%;
-    --input: 223 39% 11%;
-    --ring: 266 100% 74%;
+    --border: 266 15% 80%;
+    --input: 220 15% 90%;
+    --ring: 266 100% 55%;
+    --radius: 0.5rem;
+    --chart-1: 266 100% 55%;
+    --chart-2: 187 100% 45%;
+    --chart-3: 220 15% 90%;
+    --chart-4: 280 65% 55%;
+    --chart-5: 340 75% 55%;
+
+    /* Surface elevation - light */
+    --surface: 220 20% 98%;
+    --surface-dim: 220 15% 94%;
+    --surface-bright: 0 0% 100%;
+    --surface-container: 220 15% 95%;
+    --surface-container-low: 220 15% 92%;
+    --surface-container-lowest: 220 15% 88%;
+    --surface-container-high: 220 15% 96%;
+    --surface-container-highest: 220 15% 90%;
+    --surface-variant: 220 15% 85%;
+    --on-surface: 222 47% 11%;
+    --on-surface-variant: 223 13% 40%;
   }
 
   * {
@@ -105,9 +137,14 @@
   }
 }
 
-::selection {
+.dark ::selection {
   background-color: rgba(160, 120, 255, 0.4);
   color: #fff;
+}
+
+.light ::selection {
+  background-color: rgba(139, 92, 246, 0.3);
+  color: #0d1527;
 }
 
 ::-webkit-scrollbar {
@@ -119,8 +156,12 @@
   border-radius: 0.25rem;
 }
 
-::-webkit-scrollbar-track {
+.dark ::-webkit-scrollbar-track {
   background: #070d1f;
+}
+
+.light ::-webkit-scrollbar-track {
+  background: #e4e7f0;
 }
 
 img,

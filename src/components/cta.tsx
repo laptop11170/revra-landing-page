@@ -1,6 +1,8 @@
 "use client";
 
+import { useTheme } from "@/context/theme-provider";
 import { ArrowRightIcon, ExternalLinkIcon } from "lucide-react";
+import { cn } from "@/lib";
 import Link from "next/link";
 import AnimationContainer from "./global/animation-container";
 import Wrapper from "./global/wrapper";
@@ -8,6 +10,8 @@ import { Button } from "./ui/button";
 import SectionBadge from "./ui/section-badge";
 
 const CTA = () => {
+    const { theme } = useTheme();
+
     return (
         <Wrapper className="py-32 lg:py-40 relative">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(160,120,255,0.15)_0%,transparent_70%)] pointer-events-none"></div>
@@ -30,7 +34,10 @@ const CTA = () => {
 
                 <AnimationContainer animation="fadeUp" delay={0.5}>
                     <Link href="/signup" className="inline-block mt-8">
-                        <Button size="lg" className="bg-gradient-to-r from-inverse-primary to-surface-container text-white border-t border-white/20 hover:shadow-[0_0_40px_rgba(160,120,255,0.4)] transition-all duration-300 transform hover:scale-105 font-display px-10 py-5">
+                        <Button size="lg" className={cn(
+                            "bg-gradient-to-r from-inverse-primary to-surface-container text-white border-t border-white/20 hover:shadow-[0_0_40px_rgba(160,120,255,0.4)] transition-all duration-300 transform hover:scale-105 font-display px-10 py-5",
+                            theme === "light" && "from-primary to-muted border-foreground/10 hover:shadow-[0_0_40px_rgba(139,92,246,0.4)]"
+                        )}>
                             Start Your Free Trial
                             <ArrowRightIcon className="ml-2 h-5 w-5" />
                         </Button>
@@ -39,19 +46,39 @@ const CTA = () => {
 
                 <AnimationContainer animation="fadeUp" delay={0.6}>
                     <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-white/10">
+                        <div className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full border",
+                            theme === "dark"
+                                ? "bg-surface-container border border-white/10"
+                                : "bg-surface-container border-border/40"
+                        )}>
                             <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center text-[10px] font-mono text-secondary font-bold">1</div>
                             <span className="text-sm font-body text-muted-foreground">AI Lead Scoring</span>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-white/10">
+                        <div className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full border",
+                            theme === "dark"
+                                ? "bg-surface-container border border-white/10"
+                                : "bg-surface-container border-border/40"
+                        )}>
                             <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center text-[10px] font-mono text-secondary font-bold">2</div>
                             <span className="text-sm font-body text-muted-foreground">Speed-to-Action</span>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container border border-white/10">
+                        <div className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full border",
+                            theme === "dark"
+                                ? "bg-surface-container border border-white/10"
+                                : "bg-surface-container border-border/40"
+                        )}>
                             <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center text-[10px] font-mono text-secondary font-bold">3</div>
                             <span className="text-sm font-body text-muted-foreground">Emma AI Voice Agent</span>
                         </div>
-                        <div className="group relative px-4 py-2 rounded-full bg-surface-container border border-white/10 hover:border-primary/30 transition-all duration-300">
+                        <div className={cn(
+                            "group relative px-4 py-2 rounded-full border transition-all duration-300",
+                            theme === "dark"
+                                ? "bg-surface-container border-white/10 hover:border-primary/30"
+                                : "bg-surface-container border-border/40 hover:border-primary/40"
+                        )}>
                             <div className="absolute inset-0 rounded-full overflow-hidden">
                                 <div className="absolute inset-0 rounded-full animate-[spin_4s_linear_infinite]">
                                     <div className="absolute top-0 left-1/2 w-1 h-1 bg-primary/60 rounded-full blur-sm"></div>
@@ -74,12 +101,20 @@ const CTA = () => {
                 </AnimationContainer>
 
                 <AnimationContainer animation="fadeUp" delay={1}>
-                    <div className="mt-8 pt-8 border-t border-white/10">
+                    <div className={cn(
+                        "mt-8 pt-8 border-t",
+                        theme === "dark" ? "border-white/10" : "border-border/30"
+                    )}>
                         <a
                             href="https://cal.id/avi-javeri"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group relative inline-flex items-center gap-2 px-4 py-2 text-sm font-body text-muted-foreground hover:text-secondary transition-colors duration-200 border border-white/10 hover:border-secondary/30 rounded-full"
+                            className={cn(
+                                "group relative inline-flex items-center gap-2 px-4 py-2 text-sm font-body transition-colors duration-200 border rounded-full",
+                                theme === "dark"
+                                    ? "text-muted-foreground hover:text-secondary border-white/10 hover:border-secondary/30"
+                                    : "text-muted-foreground hover:text-secondary border-border/40 hover:border-secondary/40"
+                            )}
                         >
                             <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
                                 <div className="absolute inset-0 animate-[spin_3s_linear_infinite]">

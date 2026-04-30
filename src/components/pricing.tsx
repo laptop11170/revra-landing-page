@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { cn } from '@/lib';
 import { Check, ExternalLink } from 'lucide-react';
+import { useTheme } from "@/context/theme-provider";
 import AnimationContainer from './global/animation-container';
 import Wrapper from "./global/wrapper";
 import { Button } from "./ui/button";
@@ -83,6 +84,7 @@ const PRICING_FEATURES = [
 
 const Pricing = () => {
     const [isYearly, setIsYearly] = useState(false);
+    const { theme } = useTheme();
 
     return (
         <Wrapper className="py-24 lg:py-32" id="pricing">
@@ -110,14 +112,19 @@ const Pricing = () => {
                         onClick={() => setIsYearly(false)}
                         className={cn(
                             "text-sm font-display font-medium transition-colors",
-                            !isYearly ? "text-on-surface" : "text-muted-foreground"
+                            !isYearly ? "text-foreground" : "text-muted-foreground"
                         )}
                     >
                         Monthly
                     </button>
                     <div
                         onClick={() => setIsYearly(!isYearly)}
-                        className="h-6 w-11 rounded-full bg-surface-container p-1 cursor-pointer transition-colors duration-300 border border-white/10"
+                        className={cn(
+                            "h-6 w-11 rounded-full p-1 cursor-pointer transition-colors duration-300 border",
+                            theme === "dark"
+                                ? "bg-surface-container border-white/10"
+                                : "bg-muted border-border/40"
+                        )}
                     >
                         <div
                             className={cn(
@@ -130,7 +137,7 @@ const Pricing = () => {
                         onClick={() => setIsYearly(true)}
                         className={cn(
                             "text-sm font-display font-medium transition-colors",
-                            isYearly ? "text-on-surface" : "text-muted-foreground"
+                            isYearly ? "text-foreground" : "text-muted-foreground"
                         )}
                     >
                         Yearly <span className="text-xs text-secondary ml-1">Save 11%</span>
@@ -142,10 +149,20 @@ const Pricing = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto pt-10">
                 {/* Main Plan Card */}
                 <AnimationContainer animation="fadeUp" delay={0.6}>
-                    <div className="relative rounded-2xl backdrop-blur-xl border border-primary/30 bg-surface-container-lowest/80 p-8 overflow-hidden h-full">
+                    <div className={cn(
+                        "relative rounded-2xl backdrop-blur-xl p-8 overflow-hidden h-full",
+                        theme === "dark"
+                            ? "border border-primary/30 bg-surface-container-lowest/80"
+                            : "border border-primary/40 bg-card/80"
+                    )}>
                         {/* Glow effect */}
                         <div className="absolute inset-x-0 mx-auto -top-8 w-64 h-32 bg-primary/20 rounded-full blur-[40px]"></div>
-                        <div className="absolute top-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+                        <div className={cn(
+                            "absolute top-0 w-full h-[1px]",
+                            theme === "dark"
+                                ? "bg-gradient-to-r from-transparent via-primary to-transparent"
+                                : "bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+                        )}></div>
 
                         <div className="relative z-10">
                             <div className="mb-6 text-center">
@@ -154,7 +171,7 @@ const Pricing = () => {
                             </div>
 
                             <div className="flex items-baseline justify-center gap-2 mb-4">
-                                <span className="text-3xl font-display font-bold text-on-surface">$</span>
+                                <span className="text-3xl font-display font-bold text-foreground">$</span>
                                 <span className="text-6xl font-display font-bold text-gradient-primary">
                                     <AnimatedNumber value={isYearly ? PRICING_ANNUAL : PRICING_MONTHLY} isYearly={isYearly} />
                                 </span>
@@ -171,14 +188,14 @@ const Pricing = () => {
                                     {PRICING_FEATURES.map((feature, index) => (
                                         <li key={index} className="flex items-start gap-3">
                                             <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
-                                            <span className="text-sm text-on-surface">{feature}</span>
+                                            <span className="text-sm text-foreground">{feature}</span>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
                             <div className="text-center">
-                                <Button className="w-full bg-gradient-to-r from-primary to-secondary text-on-primary shadow-[0_0_20px_rgba(160,120,255,0.3)] font-display px-8">
+                                <Button className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-[0_0_20px_rgba(160,120,255,0.3)] font-display px-8">
                                     Start Free Trial
                                 </Button>
                                 <p className="text-xs text-muted-foreground mt-2">7-day free trial</p>
@@ -189,9 +206,17 @@ const Pricing = () => {
 
                 {/* Custom Solution Card */}
                 <AnimationContainer animation="fadeUp" delay={0.7}>
-                    <div className="relative rounded-2xl border border-outline-variant/30 bg-surface-container-lowest/50 p-8 overflow-hidden h-full flex flex-col">
+                    <div className={cn(
+                        "relative rounded-2xl border p-8 overflow-hidden h-full flex flex-col",
+                        theme === "dark"
+                            ? "border-outline-variant/30 bg-surface-container-lowest/50"
+                            : "border-border/40 bg-card/50"
+                    )}>
                         <div className="text-center mb-6">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center mx-auto mb-4">
+                            <div className={cn(
+                                "w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mx-auto mb-4",
+                                theme === "dark" ? "border border-primary/30" : "border border-primary/40"
+                            )}>
                                 <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
@@ -224,9 +249,17 @@ const Pricing = () => {
                                 </li>
                             </ul>
 
-                            <div className="bg-surface-container rounded-lg p-3 mb-4">
+                            <div className={cn(
+                                "rounded-lg p-3 mb-4",
+                                theme === "dark" ? "bg-surface-container" : "bg-muted"
+                            )}>
                                 <label className="text-xs text-muted-foreground block mb-1">Select team size</label>
-                                <select className="w-full bg-surface border border-outline-variant/30 rounded-lg px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary/50">
+                                <select className={cn(
+                                    "w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary/50",
+                                    theme === "dark"
+                                        ? "bg-surface border border-outline-variant/30 text-foreground"
+                                        : "bg-muted border border-border/30 text-foreground"
+                                )}>
                                     <option>5-10 seats</option>
                                     <option>11-25 seats</option>
                                     <option>26-50 seats</option>

@@ -1,6 +1,8 @@
 "use client";
 
+import { useTheme } from "@/context/theme-provider";
 import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { cn } from '@/lib';
 import Link from 'next/link';
 import AnimationContainer from './global/animation-container';
 import Wrapper from "./global/wrapper";
@@ -34,8 +36,15 @@ const SOCIAL_LINKS = [
 ];
 
 const Footer = () => {
+    const { theme } = useTheme();
+
     return (
-        <footer className="relative border-t border-white/5 bg-[#050505] pt-16 pb-8 w-full overflow-hidden">
+        <footer className={cn(
+            "relative border-t pt-16 pb-8 w-full overflow-hidden",
+            theme === "dark"
+                ? "border-white/5 bg-[#050505]"
+                : "border-black/10 bg-background"
+        )}>
             <Wrapper className="overflow-x-hidden">
                 <div className="grid gap-12 xl:grid-cols-3 xl:gap-8">
                     <AnimationContainer animation="fadeRight" delay={0.4}>
@@ -58,7 +67,7 @@ const Footer = () => {
                                     >
                                         <Link
                                             href={social.href}
-                                            className="text-slate-500 hover:text-secondary transition-colors duration-200"
+                                            className="text-muted-foreground hover:text-secondary transition-colors duration-200"
                                         >
                                             <social.icon className="w-5 h-5" />
                                         </Link>
@@ -146,8 +155,11 @@ const Footer = () => {
                 </div>
 
                 <AnimationContainer animation="fadeUp" delay={1}>
-                    <div className="mt-16 border-t border-white/5 py-8 flex flex-col md:flex-row items-center justify-center">
-                        <p className="text-sm text-slate-500 font-mono">
+                    <div className={cn(
+                        "mt-16 py-8 flex flex-col md:flex-row items-center justify-center",
+                        theme === "dark" ? "border-t border-white/5" : "border-t border-black/10"
+                    )}>
+                        <p className="text-sm text-muted-foreground font-mono">
                             © {new Date().getFullYear()} RevRa CRM. Engineered for high-velocity intelligence.
                         </p>
                     </div>

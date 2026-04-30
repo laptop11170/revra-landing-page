@@ -1,28 +1,28 @@
 # RevRa Landing Page Design System
 
 ## Overview
-A dark-themed, futuristic SaaS landing page with glassmorphism UI, gradient accents, and subtle animations. Designed for a high-tech AI-native CRM product.
+A dual-theme (dark/light), futuristic SaaS landing page with glassmorphism UI, gradient accents, and subtle animations. Designed for a high-tech AI-native CRM product. Supports both dark mode (default) and light mode with theme-aware components.
 
 ---
 
 ## Color Palette
 
-### Core Colors
+### Core Colors - Dark Mode
 ```css
 /* Backgrounds */
---background: #101010 (main page background)
---surface: #0c1324 (card backgrounds)
---surface-dim: #0c1324
---surface-bright: #33394c
---surface-container: #191f31
---surface-container-low: #151b2d
---surface-container-lowest: #070d1f
---surface-container-high: #23293c
---surface-container-highest: #2e3447
---surface-variant: #2e3447
+--background: 222 47% 4%
+--surface: 222 47% 5%
+--surface-dim: 222 47% 5%
+--surface-bright: 223 39% 15%
+--surface-container: 223 39% 11%
+--surface-container-low: 223 39% 9%
+--surface-container-lowest: 222 47% 3%
+--surface-container-high: 223 39% 13%
+--surface-container-highest: 223 39% 18%
+--surface-variant: 223 39% 18%
 
 /* Primary Brand (Purple) */
---primary: #a078ff
+--primary: 266 100% 74%  /* #a078ff */
 --primary-container: #a078ff
 --primary-fixed: #e9ddff
 --primary-fixed-dim: #d0bcff
@@ -32,7 +32,7 @@ A dark-themed, futuristic SaaS landing page with glassmorphism UI, gradient acce
 --inverse-primary: #6d3bd7
 
 /* Secondary Brand (Cyan) */
---secondary: #00cbe6
+--secondary: 187 100% 63%  /* #00cbe6 */
 --secondary-container: #00cbe6
 --secondary-fixed: #a2eeff
 --secondary-fixed-dim: #2fd9f4
@@ -41,14 +41,48 @@ A dark-themed, futuristic SaaS landing page with glassmorphism UI, gradient acce
 --on-secondary-fixed-variant: #004e5a
 
 /* Text Colors */
---on-surface: #dce1fb (primary text)
---on-surface-variant: #cbc3d7
---muted-foreground: #94a3b8
---foreground: #dce1fb
+--on-surface: 220 40% 90%
+--on-surface-variant: 223 13% 75%
+--muted-foreground: 223 13% 61%
+--foreground: 220 40% 90%
 
 /* Borders & Dividers */
---border: rgba(255, 255, 255, 0.1)
+--border: 266 30% 30%
 --outline-variant: #494454
+```
+
+### Core Colors - Light Mode
+```css
+/* Backgrounds */
+--background: 220 20% 97%
+--surface: 220 20% 98%
+--surface-dim: 220 15% 94%
+--surface-bright: 0 0% 100%
+--surface-container: 220 15% 95%
+--surface-container-low: 220 15% 92%
+--surface-container-lowest: 220 15% 88%
+--surface-container-high: 220 15% 96%
+--surface-container-highest: 220 15% 90%
+--surface-variant: 220 15% 85%
+
+/* Primary Brand (Purple - slightly adjusted for contrast on light) */
+--primary: 266 100% 55%  /* #8b5cf6 */
+--primary-foreground: 0 0% 100%
+
+/* Secondary Brand (Cyan - slightly adjusted) */
+--secondary: 187 100% 45%  /* #06b6d4 */
+--secondary-foreground: 0 0% 100%
+
+/* Text Colors */
+--on-surface: 222 47% 11%
+--on-surface-variant: 223 13% 40%
+--muted-foreground: 220 13% 45%
+--foreground: 222 47% 11%
+
+/* Borders & Dividers */
+--border: 266 15% 80%
+--muted: 220 15% 90%
+--input: 220 15% 90%
 ```
 
 ### Gradient Definitions
@@ -61,10 +95,65 @@ background: linear-gradient(to right, #a078ff, #00cbe6);
 /* Button Gradient */
 background: linear-gradient(to right, from-primary to-secondary)
 
-/* Glow Effects */
+/* Glow Effects (Dark Mode) */
 box-shadow: 0 0 15px rgba(160, 120, 255, 0.3);  /* Primary glow */
 box-shadow: 0 0 15px rgba(93, 230, 255, 0.3); /* Secondary glow */
+
+/* Glow Effects (Light Mode) */
+box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);  /* Primary glow */
+box-shadow: 0 0 15px rgba(0, 168, 204, 0.2);  /* Secondary glow */
 ```
+
+---
+
+## Theme System
+
+### Implementation
+The theme system is implemented via React Context with localStorage persistence:
+
+```tsx
+// src/context/theme-provider.tsx
+"use client";
+import * as React from "react";
+
+type Theme = "dark" | "light";
+
+interface ThemeContextType {
+    theme: Theme;
+    toggleTheme: () => void;
+}
+
+// ... provider implementation
+
+export function useTheme() {
+    const context = React.useContext(ThemeContext);
+    if (!context) {
+        throw new Error("useTheme must be used within a ThemeProvider");
+    }
+    return context;
+}
+```
+
+### Usage Pattern
+```tsx
+const MyComponent = () => {
+    const { theme } = useTheme();
+
+    return (
+        <div className={cn(
+            "p-6 rounded-xl",
+            theme === "dark"
+                ? "bg-surface-container-lowest/60 border border-white/10"
+                : "bg-card/60 border border-border/40"
+        )}>
+            Content here
+        </div>
+    );
+};
+```
+
+### CSS Variables
+CSS variables for both themes are defined in `globals.css` under `.dark` and `.light` selectors. The `html` element receives the theme class.
 
 ---
 
@@ -113,31 +202,38 @@ text-[8px]: 0.5rem (8px)
 max-w-screen-xl mx-auto px-4 lg:px-20
 ```
 
-### 2. Glassmorphism Card
+### 2. Glassmorphism Card (Theme-Aware)
 ```tsx
-<div className="flex flex-col items-start gap-4 p-6 rounded-2xl
-  bg-surface-container-lowest/40
-  backdrop-blur-xl
-  border border-white/10
-  hover:border-primary/30
-  transition-all duration-500
-  group relative overflow-hidden"
->
+<div className={cn(
+    "flex flex-col items-start gap-4 p-6 rounded-2xl backdrop-blur-xl border transition-all duration-500 group relative overflow-hidden",
+    theme === "dark"
+        ? "bg-surface-container-lowest/60 border border-white/10"
+        : "bg-card/60 border border-border/40"
+)}>
 ```
 **States:**
-- Default: `border-white/10`, subtle background
+- Default Dark: `border-white/10`, subtle background
+- Default Light: `border-border/40`, light card background
 - Hover: `border-primary/30`, increased background opacity, 500ms transition
 
-### 3. Section Badge (Pill Badge)
+### 3. Section Badge (Theme-Aware)
 ```tsx
-<div className="px-2.5 py-1 rounded-full bg-neutral-800 flex items-center justify-center gap-2">
-  <div className="relative flex items-center justify-center">
-    <div className="absolute w-3 h-3 rounded-full bg-primary/30 animate-ping"></div>
-    <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-  </div>
-  <span className="text-xs font-medium text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-300">
-    {title}
-  </span>
+<div className={cn(
+    "px-2.5 py-1 rounded-full flex items-center justify-center gap-2",
+    theme === "dark" ? "bg-neutral-800" : "bg-neutral-200"
+)}>
+    <div className="relative flex items-center justify-center">
+        <div className="absolute w-3 h-3 rounded-full bg-primary/30 animate-ping"></div>
+        <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+    </div>
+    <span className={cn(
+        "text-xs font-medium text-transparent bg-clip-text",
+        theme === "dark"
+            ? "bg-gradient-to-r from-primary to-orange-300"
+            : "bg-gradient-to-r from-primary to-secondary"
+    )}>
+        {title}
+    </span>
 </div>
 ```
 
@@ -164,16 +260,27 @@ max-w-screen-xl mx-auto px-4 lg:px-20
 
 ### 6. Gradient Border Line
 ```tsx
-<div className="absolute top-0 w-full h-[1px]
-  bg-gradient-to-r from-transparent via-primary to-transparent"
-/>
+<div className={cn(
+    "absolute top-0 w-full h-[1px]",
+    theme === "dark"
+        ? "bg-gradient-to-r from-transparent via-white/30 to-transparent"
+        : "bg-gradient-to-r from-transparent via-border/50 to-transparent"
+)} />
 ```
 
-### 7. Tech Panel (Control Panel Style)
+### 7. Tech Panel (Control Panel Style - Theme-Aware)
 ```tsx
-<div className="relative bg-surface/50 rounded-lg border border-white/10 p-3 overflow-hidden">
+<div className={cn(
+    "relative rounded-lg border p-3 overflow-hidden",
+    theme === "dark"
+        ? "bg-surface/50 border-white/10"
+        : "bg-muted/50 border-border/30"
+)}>
   {/* Panel header */}
-  <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5">
+  <div className={cn(
+      "flex items-center justify-between mb-2 pb-2",
+      theme === "dark" ? "border-b border-white/5" : "border-b border-border/20"
+  )}>
     <div className="flex items-center gap-2">
       <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
       <span className="text-[9px] font-mono text-green-500">SYSTEM ONLINE</span>
@@ -181,7 +288,10 @@ max-w-screen-xl mx-auto px-4 lg:px-20
   </div>
 
   {/* Status bar with progress */}
-  <div className="mt-2 pt-2 border-t border-white/5 flex items-center justify-between">
+  <div className={cn(
+      "mt-2 pt-2 flex items-center justify-between",
+      theme === "dark" ? "border-t border-white/5" : "border-t border-border/20"
+  )}>
     <div className="h-1 w-16 bg-surface-container rounded-full overflow-hidden">
       <div className="h-full bg-gradient-to-r from-secondary to-primary animate-pulse" style={{ width: '75%' }} />
     </div>
@@ -196,15 +306,21 @@ max-w-screen-xl mx-auto px-4 lg:px-20
 ```tsx
 <li className="flex items-start gap-3">
   <Check className="w-4 h-4 text-secondary flex-shrink-0 mt-0.5" />
-  <span className="text-sm text-on-surface">{feature}</span>
+  <span className="text-sm text-foreground">{feature}</span>
 </li>
 ```
 
-### 9. Call Interface Visualization
+### 9. Call Interface Visualization (Theme-Aware)
 ```tsx
-<div className="bg-surface/80 rounded-lg border border-white/10 overflow-hidden">
+<div className={cn(
+    "rounded-lg border overflow-hidden",
+    theme === "dark" ? "bg-surface/80 border-white/10" : "bg-muted/80 border-border/30"
+)}>
   {/* Header */}
-  <div className="flex items-center justify-between px-3 py-2 bg-green-500/10 border-b border-green-500/20">
+  <div className={cn(
+      "flex items-center justify-between px-3 py-2",
+      theme === "dark" ? "bg-green-500/10 border-b border-green-500/20" : "bg-green-500/10 border-b border-green-500/20"
+  )}>
     <div className="flex items-center gap-2">
       <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
       <span className="text-[10px] font-mono text-green-500">Call in Progress</span>
@@ -229,11 +345,17 @@ max-w-screen-xl mx-auto px-4 lg:px-20
 </div>
 ```
 
-### 10. Team Activity Feed
+### 10. Team Activity Feed (Theme-Aware)
 ```tsx
-<div className="bg-surface/80 rounded-lg border border-white/10">
+<div className={cn(
+    "rounded-lg border",
+    theme === "dark" ? "bg-surface/80 border-white/10" : "bg-muted/80 border-border/30"
+)}>
   {/* Header */}
-  <div className="flex items-center justify-between px-3 py-2 bg-surface-container border-b border-white/5">
+  <div className={cn(
+      "flex items-center justify-between px-3 py-2",
+      theme === "dark" ? "bg-surface-container border-b border-white/5" : "bg-muted border-b border-border/20"
+  )}>
     <span className="text-[10px] font-mono text-muted-foreground">Team Activity</span>
     <div className="flex items-center gap-1">
       <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
@@ -244,10 +366,13 @@ max-w-screen-xl mx-auto px-4 lg:px-20
   {/* Agent cards */}
   <div className="p-2 space-y-2">
     {agents.map((agent, i) => (
-      <div key={i} className="flex items-center gap-2 p-2 bg-surface-container/50 rounded-lg">
+      <div key={i} className={cn(
+          "flex items-center gap-2 p-2 rounded-lg",
+          theme === "dark" ? "bg-surface-container/50" : "bg-muted/50"
+      )}>
         <div className={cn(
           "w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-mono",
-          agent.status === 'active' ? "bg-primary/20 text-primary" : "bg-white/10 text-muted-foreground"
+          agent.status === 'active' ? "bg-primary/20 text-primary" : "bg-black/10 text-muted-foreground"
         )}>
           {agent.initials}
         </div>
@@ -257,7 +382,7 @@ max-w-screen-xl mx-auto px-4 lg:px-20
         </div>
         <div className={cn(
           "w-1.5 h-1.5 rounded-full",
-          agent.status === 'active' ? "bg-green-500" : "bg-white/30"
+          agent.status === 'active' ? "bg-green-500" : "bg-black/30"
         )} />
       </div>
     ))}
@@ -265,11 +390,17 @@ max-w-screen-xl mx-auto px-4 lg:px-20
 </div>
 ```
 
-### 11. AI Terminal Visualization
+### 11. AI Terminal Visualization (Theme-Aware)
 ```tsx
-<div className="bg-surface/80 rounded-lg border border-white/10 overflow-hidden">
+<div className={cn(
+    "rounded-lg border overflow-hidden",
+    theme === "dark" ? "bg-surface/80 border-white/10" : "bg-muted/80 border-border/30"
+)}>
   {/* Terminal header */}
-  <div className="flex items-center gap-1.5 px-3 py-2 bg-surface-container border-b border-white/5">
+  <div className={cn(
+      "flex items-center gap-1.5 px-3 py-2",
+      theme === "dark" ? "bg-surface-container border-b border-white/5" : "bg-muted border-b border-border/20"
+  )}>
     <div className="w-2 h-2 rounded-full bg-red-500/60"></div>
     <div className="w-2 h-2 rounded-full bg-yellow-500/60"></div>
     <div className="w-2 h-2 rounded-full bg-green-500/60"></div>
@@ -298,7 +429,7 @@ max-w-screen-xl mx-auto px-4 lg:px-20
 </AnimationContainer>
 
 // Available animations:
-// fadeUp, fadeDown, fadeLeft, fadeRight
+// fadeUp, fadeDown, fadeLeft, fadeRight, scaleUp
 ```
 
 ### Hover Transitions
@@ -307,7 +438,8 @@ transition-all duration-300    /* Standard hover transition */
 transition-all duration-500  /* Slower, more dramatic transitions */
 
 /* Border color change on hover */
-border border-white/10 hover:border-primary/30
+border border-white/10 hover:border-primary/30   /* Dark mode */
+border border-border/40 hover:border-primary/40  /* Light mode */
 
 /* Scale effect */
 transform hover:scale-105
@@ -352,6 +484,24 @@ const AnimatedNumber = ({ value, isYearly }) => {
 
 ## Layout Patterns
 
+### Full-Width Background Grid
+The hero section uses a full-width checkerboard pattern that extends beyond the content wrapper:
+
+```tsx
+<div className="relative">
+    {/* Full-width Background Grid - outside Wrapper */}
+    <div className={cn(
+        "absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none",
+        theme === "light" && "bg-[linear-gradient(rgba(13,21,39,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(13,21,39,0.05)_1px,transparent_1px)]"
+    )}></div>
+
+    {/* Content within Wrapper */}
+    <Wrapper className="pt-40 lg:pt-52">
+        {/* Content here */}
+    </Wrapper>
+</div>
+```
+
 ### Two-Column Layout (Mobile: 1 column, Desktop: 2 columns)
 ```tsx
 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -380,18 +530,14 @@ const AnimatedNumber = ({ value, isYearly }) => {
 
 ## Button Styles
 
-### Primary CTA Button
+### Primary CTA Button (Theme-Aware)
 ```tsx
-<Button size="lg" className="
-  bg-gradient-to-r from-inverse-primary to-surface-container
-  text-white
-  border-t border-white/20
-  hover:shadow-[0_0_40px_rgba(160,120,255,0.4)]
-  transition-all duration-300
-  transform hover:scale-105
-  font-display
-  px-10 py-5
-">
+<Button size="lg" className={cn(
+    "bg-gradient-to-r text-primary-foreground shadow-[0_0_20px_rgba(160,120,255,0.3)] transition-all duration-300 font-display px-8",
+    theme === "dark"
+        ? "from-inverse-primary to-surface-container border-t border-white/20 hover:shadow-[0_0_30px_rgba(93,230,255,0.3)]"
+        : "from-primary to-muted border-foreground/10 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+)}>
   Start Your Free Trial
 </Button>
 ```
@@ -403,15 +549,14 @@ const AnimatedNumber = ({ value, isYearly }) => {
 </Button>
 ```
 
-### Navbar Get Started Button
+### Navbar Get Started Button (Theme-Aware)
 ```tsx
-<Button size="sm" className="
-  bg-primary-container
-  text-on-primary-container
-  hover:bg-white/10 hover:text-primary
-  font-display font-medium tracking-tight
-  shadow-[0_0_15px_rgba(160,120,255,0.3)]
-">
+<Button size="sm" className={cn(
+    "font-display font-medium tracking-tight shadow-[0_0_15px_rgba(160,120,255,0.3)]",
+    theme === "dark"
+        ? "bg-primary-container text-on-primary-container hover:bg-white/10 hover:text-primary"
+        : "bg-primary text-white hover:bg-primary/90"
+)}>
   Get Started
 </Button>
 ```
@@ -427,12 +572,17 @@ const AnimatedNumber = ({ value, isYearly }) => {
 
 ## Visual Effects
 
-### Background Grid Pattern
+### Background Grid Pattern (Theme-Aware)
 ```tsx
+// Dark mode (subtle white lines)
 <div className="absolute inset-0
   bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]
   bg-[size:40px_40px]
   pointer-events-none"
+/>
+
+// Light mode (subtle dark lines)
+<div className="bg-[linear-gradient(rgba(13,21,39,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(13,21,39,0.05)_1px,transparent_1px)]"
 />
 ```
 
@@ -499,13 +649,14 @@ space-y-2                    /* Vertical spacing between items */
 
 ### Borders & Shadows
 ```css
-border border-white/10        /* Subtle white border */
+border border-white/10        /* Dark mode subtle border */
+border border-border/40        /* Light mode subtle border */
 border border-outline-variant/30
 rounded-2xl                  /* Rounded corners (16px) */
 rounded-lg                   /* Rounded corners (8px) */
 rounded-full                 /* Pill shape */
 shadow-2xl                  /* Large shadow */
-drop-shadow-[0_0_8px_rgba(160,120,255,0.5)]  /* Glow effect */
+shadow-[0_0_15px_rgba(160,120,255,0.3)]  /* Primary glow */
 ```
 
 ---
@@ -514,16 +665,57 @@ drop-shadow-[0_0_8px_rgba(160,120,255,0.5)]  /* Glow effect */
 
 When creating a new component, ensure it has:
 
-1. [ ] "use client" directive if using hooks/animations
-2. [ ] AnimationContainer wrapper with appropriate delay
-3. [ ] Glassmorphism background styling
-4. [ ] Hover state with border color change
-5. [ ] Background glow effect (positioned absolutely)
-6. [ ] Icon with gradient background and glow on hover
-7. [ ] Consistent padding (p-6)
-8. [ ] Consistent gap (gap-4 or gap-6)
-9. [ ] SectionBadge if it's a section header
-10. [ ] Mobile-responsive layout (grid-cols-1 md:grid-cols-2)
-11. [ ] Wrapper component for content container
-12. [ ] Consistent typography (font-display for headings, font-body for descriptions)
-13. [ ] Dark theme styling (bg-surface-container, text-muted-foreground, etc.)
+1. [ ] "use client" directive if using hooks/animations/theme
+2. [ ] useTheme() hook for theme-aware styling
+3. [ ] cn() utility with theme === "dark" conditional classes
+4. [ ] AnimationContainer wrapper with appropriate delay
+5. [ ] Glassmorphism background styling (theme-aware)
+6. [ ] Hover state with border color change (theme-aware)
+7. [ ] Background glow effect (positioned absolutely)
+8. [ ] Icon with gradient background and glow on hover
+9. [ ] Consistent padding (p-6)
+10. [ ] Consistent gap (gap-4 or gap-6)
+11. [ ] SectionBadge if it's a section header (theme-aware)
+12. [ ] Mobile-responsive layout (grid-cols-1 md:grid-cols-2)
+13. [ ] Wrapper component for content container
+14. [ ] Consistent typography (font-display for headings, font-body for descriptions)
+15. [ ] Dark theme styling (bg-surface-container, text-muted-foreground, etc.)
+16. [ ] Light theme styling (bg-card, bg-muted, border-border/40, etc.)
+17. [ ] Both themes work correctly - test toggle
+
+---
+
+## File Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout with ThemeProvider
+│   └── (marketing)/
+│       ├── layout.tsx           # Marketing layout (Navbar + Footer)
+│       └── page.tsx             # Landing page sections
+├── components/
+│   ├── ui/
+│   │   └── section-badge.tsx    # Theme-aware badge
+│   ├── global/
+│   │   ├── wrapper.tsx          # Section wrapper
+│   │   └── animation-container.tsx
+│   ├── hero.tsx                # Theme-aware hero with full-width grid
+│   ├── features.tsx            # Theme-aware feature cards
+│   ├── perks.tsx               # Theme-aware perks
+│   ├── how-it-works.tsx        # Theme-aware How It Works
+│   ├── pricing.tsx             # Theme-aware pricing
+│   ├── cta.tsx                 # Theme-aware CTA
+│   ├── testimonials.tsx        # Theme-aware testimonials
+│   ├── faq.tsx                 # Theme-aware FAQ
+│   ├── footer.tsx              # Theme-aware footer
+│   └── navbar.tsx              # Theme-aware navbar with toggle
+├── context/
+│   └── theme-provider.tsx      # Theme context & hook
+├── constants/
+│   └── *.ts                    # Content constants
+├── lib/
+│   └── utils.ts                # cn() utility
+└── styles/
+    └── globals.css             # CSS variables (.dark & .light)
+```
